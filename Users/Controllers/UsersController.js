@@ -3,10 +3,17 @@ const UsersModel = require("../Models/UsersModels");
 const usersModel = new UsersModel();
 
 class UsersController {
-  ControllerListar(request, response) {
+  async ControllerListar(request, response) {
     try {
-      const lista = usersModel.ModelListar();
-      response.json(lista);
+      
+      const usuario = await usersModel.ModelListar();
+
+      if (!usuario) {
+        return response.status(404).json({ error: "CONTROLLER: Usuário não encontrado" });
+      }
+
+      response.json(usuario);
+      
     } catch (error) {
       response
         .status(500)
@@ -16,7 +23,9 @@ class UsersController {
 
   async ControllerAdicionar(request, response) {
     try {
-      await usersModel.ModelAdicionar(request.body);
+      const { nome, idade, email, senha } = request.body;
+      await usersModel.ModelAdicionar(nome, idade, email, senha);
+      console.log(nome, idade, email, senha);
 
       response.status(201).json({
         message: "CONTROLLER: Usuário cadastrado com sucesso",
@@ -28,11 +37,16 @@ class UsersController {
     }
   }
 
-  ControllerLitarId(request, response) {
+  async ControllerLitarId(request, response) {
     try {
-      const id = request.params.id;
-      const listaId = usersModel.ModelListarId(id);
-      response.json(listaId);
+      const { id } = request.params;
+      const usuario = await usersModel.ModelListarId(id);
+
+      if (!usuario) {
+        return response.status(404).json({ error: "CONTROLLER: Usuário não encontrado" });
+      }
+
+      response.json(usuario);
     } catch (error) {
       response.status(500).json({
         message: "CONTROLLER: Erro ao listar usuários por id" + error,
@@ -40,13 +54,12 @@ class UsersController {
     }
   }
 
-  ControllerDelete(request, response) {
+  async ControllerDelete(request, response) {
     try {
-      const id = request.params.id;
-      usersModel.ModelDeletar(id);
-      response.json({
-        message: "CONTROLLER: Usuário deletado com sucesso",
-      });
+    const { id } = request.params;
+    const resultado = await usersModel.ModelDeletardeletar(id);
+
+    res.json(resultado);
     } catch (error) {
       response.status(500).json({
         message: "CONTROLLER: Erro ao deletar usuário: " + error,
@@ -54,19 +67,19 @@ class UsersController {
     }
   }
 
-  ControllerUpdate(request, response) {
+  async ControllerUpdate(request, response) {
     try {
-      const idUser = parseInt(request.params.id);
+      const { nome, idade, email, senha } = request.body;
+      const { id } = request.params;
+      
 
-      console.log(request.body); // Verifique se os dados estão sendo logados corretamente
+      const usuarioAtualizado = await usersModel.ModelUpdate(id, nome, idade, email, senha);
 
-      usersModel.ModelUpdate(idUser, request.body);
+      response.json(usuarioAtualizado);
 
-      return response.json({ message: "Usuário atualizado com sucesso" });
     } catch (error) {
-      console.error("Erro ao atualizar usuário:", error);
 
-      return response.status(500).json({ message: "Erro interno do servidor" });
+      return response.json({ message: "CONTROLLER: Erro ao atualizar usuário" + error});
     }
   }
 }

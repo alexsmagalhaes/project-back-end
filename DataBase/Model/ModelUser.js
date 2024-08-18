@@ -1,31 +1,36 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const connection = require("../Config/connection");
 
-const User = connection.define('TB_User', {
-    userId: {
+const User = connection.define(
+  "TB_USERS",
+  {
+    USER_ID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
     },
-    userName: {
-      type: DataTypes.STRING(30),   
-  
+    USER_NOME: {
+      type: DataTypes.STRING(30),
       allowNull: false,
     },
-    userAge: {
+    USER_IDADE: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    userEmail: {
+    USER_EMAIL: {
       type: DataTypes.STRING(30),
       allowNull: false,
       unique: true,
     },
-    userPassword: {
+    USER_SENHA: {
       type: DataTypes.STRING(30),
       allowNull: false,
-    }
-  });
-  
-  module.exports = User;
+    },
+  },
+  {
+    tableName: "TB_USERS",
+  }
+);
+
+module.exports = User;
