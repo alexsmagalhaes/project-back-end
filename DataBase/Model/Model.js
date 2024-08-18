@@ -14,5 +14,5 @@ Promise.all([
     console.log("Tabelas criadas com sucesso");
   })
   .catch((error) => {
-    console.error("Erro ao criar tabelas:", error);
+    console.error("Erro ao criar tabelas:"+ error);
   });
