@@ -1,5 +1,5 @@
 const {DataTypes } = require("sequelize");
-const connection = require("../connection");
+const connection = require("../DataBase/connection");
 
 const Product = connection.define(
   "TB_PRODUCTS",
@@ -17,7 +17,7 @@ const Product = connection.define(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    PRO_DESCIPTION: {
+    PRO_DESCRIPTION: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
@@ -30,7 +30,10 @@ const Product = connection.define(
       },
     },
   },
-  { tableName: "TB_PRODUCTS" }
+  {
+    tableName: "TB_PRODUCTS",
+    timestamps: false,
+  }
 );
 
 module.exports = Product;

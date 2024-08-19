@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken")
 
 const jwtSecret = process.env.APP_KEY_SECRET;
 
-
 class UsersController {
 
   async findAll(req, res) {
@@ -91,7 +90,6 @@ class UsersController {
     }
   }
 
-
   async login(req, res) {
     const { email: USER_EMAIL, password } = req.body;
 
@@ -138,8 +136,6 @@ class UsersController {
         USER_EMAIL: email,
         USER_SENHA: password,
       });
-
-
 
       res.status(201).json({
         _id: newUser.USER_ID,
